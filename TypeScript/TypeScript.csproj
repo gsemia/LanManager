@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{D83CAD53-0230-4DEC-A831-C14E57DF774F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>TypeScript</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56631</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:56544/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES3</TypeScriptTarget>
+    <TypeScriptIncludeComments>false</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rmdir $(SolutionDir)app\js\ /s /q
+mkdir $(SolutionDir)app\js\
+xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Models\Model.ts" />
+    <Content Include="Models\Model.js">
+      <DependentUpon>Model.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\knockout.viewmodel.2.0.3.js" />
+    <Content Include="Scripts\knockout.viewmodel.2.0.3.min.js" />
+    <Content Include="Scripts\typings\jquery\jquery.d.ts" />
+    <Content Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
+    <Content Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
+    <Content Include="Scripts\typings\knockout\knockout.amd.d.ts" />
+    <Content Include="Scripts\typings\knockout\knockout.d.ts" />
+    <Content Include="Scripts\typings\modernizr\modernizr.d.ts" />
+    <Content Include="TS.js">
+      <DependentUpon>TS.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="TS.ts" />
+    <TypeScriptCompile Include="Libraries\jquery.ts" />
+    <TypeScriptCompile Include="BaseConfig.ts" />
+    <Content Include="BaseConfig.js">
+      <DependentUpon>BaseConfig.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Base\IRunnable.ts" />
+    <Content Include="Base\IRunnable.js">
+      <DependentUpon>IRunnable.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Base\Runner.ts" />
+    <Content Include="Base\Runner.js">
+      <DependentUpon>Runner.ts</DependentUpon>
+    </Content>
+    <Content Include="Libraries\jquery.js">
+      <DependentUpon>jquery.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Libraries\knockout.ts" />
+    <Content Include="Libraries\knockout.js">
+      <DependentUpon>knockout.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Libraries\store.ts" />
+    <Content Include="Libraries\store.js">
+      <DependentUpon>store.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\store.js" />
+    <Content Include="Scripts\store.min.js" />
+    <Content Include="Scripts\typings\storejs\storejs.d.ts" />
+    <None Include="Scripts\jquery-2.0.2.intellisense.js" />
+    <TypeScriptCompile Include="Base\Cache.ts" />
+    <Content Include="Base\Cache.js">
+      <DependentUpon>Cache.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.0.2.js" />
+    <Content Include="Scripts\jquery-2.0.2.min.js" />
+    <Content Include="Scripts\jquery-2.0.2.min.map" />
+    <TypeScriptCompile Include="Knockout\KnockoutMapper.ts" />
+    <Content Include="Knockout\KnockoutMapper.js">
+      <DependentUpon>KnockoutMapper.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Base\Url.ts" />
+    <Content Include="Base\Url.js">
+      <DependentUpon>Url.ts</DependentUpon>
+    </Content>
+    <Content Include="Base\UrlManager.js">
+      <DependentUpon>UrlManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Base\UrlManager.ts" />
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\knockout.validation.debug.js" />
+    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
+    <Content Include="Scripts\typings\knockout.viewmodel\knockout.viewmodel.d.ts" />
+    <Content Include="Scripts\r.js" />
+    <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\typings\requirejs\require.d.ts" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Importer\" />
+  </ItemGroup>
+</Project>
