@@ -3,3 +3,6 @@ app/protected/runtime/
 packages/
 TypeScript/bin/
 TypeScript/obj/
+nbproject/
+*.dll
+*.bak

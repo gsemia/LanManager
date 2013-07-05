@@ -7,7 +7,7 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Pathfinder',
+	'name'=>'LanManager',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -22,12 +22,6 @@ return array(
 	),
 
 	'modules'=>array(
-		'Administration'=>array(
-			'modules'=>array(
-				'Spell',
-			),
-		),
-		'Import',
 		'gii'=>array(
             'class'=>'system.gii.GiiModule',
 			'password'=>'root',
@@ -52,7 +46,7 @@ return array(
 			'showScriptName'=>false,
 		),
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=pathfinder',
+			'connectionString' => 'mysql:host=localhost;dbname=lanmanager',
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',

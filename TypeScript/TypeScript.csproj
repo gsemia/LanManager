@@ -65,8 +65,52 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Models\Model.ts" />
+    <TypeScriptCompile Include="Knockout\KoUser.ts" />
+    <Content Include="Knockout\KoUser.js">
+      <DependentUpon>KoUser.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\IUser.ts" />
+    <TypeScriptCompile Include="Models\IEvent.ts" />
+    <Content Include="Models\IEvent.js">
+      <DependentUpon>IEvent.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\Invitation.ts" />
+    <TypeScriptCompile Include="Models\IInvitation.ts" />
+    <TypeScriptCompile Include="Models\IGame.ts" />
+    <Content Include="Models\IGame.js">
+      <DependentUpon>IGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Models\IInvitation.js">
+      <DependentUpon>IInvitation.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\IModel.ts" />
+    <Content Include="Models\IModel.js">
+      <DependentUpon>IModel.ts</DependentUpon>
+    </Content>
+    <Content Include="Models\Invitation.js">
+      <DependentUpon>Invitation.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\IRating.ts" />
+    <Content Include="Models\IRating.js">
+      <DependentUpon>IRating.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\IRecommendation.ts" />
+    <Content Include="Models\IRecommendation.js">
+      <DependentUpon>IRecommendation.ts</DependentUpon>
+    </Content>
+    <Content Include="Models\IUser.js">
+      <DependentUpon>IUser.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\IUserRecommendation.ts" />
+    <Content Include="Models\IUserRecommendation.js">
+      <DependentUpon>IUserRecommendation.ts</DependentUpon>
+    </Content>
     <Content Include="Models\Model.js">
       <DependentUpon>Model.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Models\User.ts" />
+    <Content Include="Models\User.js">
+      <DependentUpon>User.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\knockout.viewmodel.2.0.3.js" />
     <Content Include="Scripts\knockout.viewmodel.2.0.3.min.js" />
@@ -152,7 +196,5 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Importer\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

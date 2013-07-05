@@ -1,0 +1,6 @@
+
+export = IModel;
+
+interface IModel {
+
+}
