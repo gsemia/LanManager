@@ -71,6 +71,14 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
     </Content>
     <TypeScriptCompile Include="Models\IUser.ts" />
     <TypeScriptCompile Include="Models\IEvent.ts" />
+    <TypeScriptCompile Include="Libraries\linq.ts" />
+    <TypeScriptCompile Include="Libraries\knockoutValidation.ts" />
+    <Content Include="Libraries\knockoutValidation.js">
+      <DependentUpon>knockoutValidation.ts</DependentUpon>
+    </Content>
+    <Content Include="Libraries\linq.js">
+      <DependentUpon>linq.ts</DependentUpon>
+    </Content>
     <Content Include="Models\IEvent.js">
       <DependentUpon>IEvent.ts</DependentUpon>
     </Content>
@@ -114,6 +122,10 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
     </Content>
     <Content Include="Scripts\knockout.viewmodel.2.0.3.js" />
     <Content Include="Scripts\knockout.viewmodel.2.0.3.min.js" />
+    <None Include="Scripts\linq-vsdoc.js" />
+    <Content Include="Scripts\linq.d.ts" />
+    <Content Include="Scripts\linq.js" />
+    <Content Include="Scripts\linq.min.js" />
     <Content Include="Scripts\typings\jquery\jquery.d.ts" />
     <Content Include="Scripts\typings\knockout.mapping\knockout.mapping.d.ts" />
     <Content Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />

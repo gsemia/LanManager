@@ -3,7 +3,7 @@
 
 // Workaround until next knockout version
 declare var arguments: any[];
-var kos: KnockoutStatic = arguments[2];
-window['ko'] = kos;
+var ko: KnockoutStatic = arguments[2];
+window['ko'] = ko;
 
-export = kos;
+export = ko;

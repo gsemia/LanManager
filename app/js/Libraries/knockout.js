@@ -1,8 +1,8 @@
 define(["require", "exports", "Scripts/knockout-2.2.1.debug"], function(require, exports) {
-    var kos = arguments[2];
-    window['ko'] = kos;
+    var ko = arguments[2];
+    window['ko'] = ko;
 
     
-    return kos;
+    return ko;
 });
 //@ sourceMappingURL=knockout.js.map

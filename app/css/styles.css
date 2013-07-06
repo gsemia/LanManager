@@ -1,3 +1,11 @@
 #page {
     padding-top: 60px;
 }
+
+#footer {
+	margin-top: 2em;
+}
+
+.well.well-collapse {
+	display: inline-block;
+}

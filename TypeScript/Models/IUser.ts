@@ -11,9 +11,9 @@ interface IUser extends IModel {
     username: string;
     email: string;
     name: string;
-    password: string;
+    password?: string;
     level: number;
 
-    invitations: IInvitation[];
-    ratings: IRating[];
+    invitations?: IInvitation[];
+    ratings?: IRating[];
 }

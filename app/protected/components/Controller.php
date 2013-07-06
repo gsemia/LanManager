@@ -20,4 +20,16 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+	
+	protected function beforeAction($action) {
+		/* @var $action CAction */
+		if (parent::beforeAction($action)) {
+
+			if (Yii::app()->user->isGuest && $action->controller->id . '/' . $action->id != 'site/login')
+				Yii::app()->user->loginRequired();
+			
+			return true;
+		}
+		return false;
+	}
 }

@@ -13,5 +13,5 @@ class TS {
         this.urlManager = new UrlManager();
     }
 
-    static app = new TS();
+    static app: TS = new TS();
 }

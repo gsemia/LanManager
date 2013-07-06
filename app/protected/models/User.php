@@ -110,4 +110,30 @@ class User extends ActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	protected function jsonAttributes() {
+		return array_diff(parent::jsonAttributes(), array('password'));
+	}
+
+
+	public function setNewPassword($password)
+	{
+		$ph = new PasswordHash(12, false);
+		$this->password = $ph->HashPassword($password);
+	}
+	
+	public function checkPassword($password)
+	{
+		$ph = new PasswordHash(12, false);
+		return $ph->CheckPassword($password, $this->password);
+	}
+	
+	public function beforeSave() {
+		if (parent::beforeSave()) {
+			if ($this->isNewRecord && empty($this->password))
+				$this->setNewPassword(substr(md5(sha1(time())), 0, 10));
+			return true;
+		}
+		return false;
+	}
 }
