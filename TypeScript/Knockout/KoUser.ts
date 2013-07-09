@@ -16,9 +16,10 @@ class KoUser {
     public isAdmin: KnockoutComputed<boolean>;
     public userCreationFormVisible = ko.observable(false);
     public userAddable: KnockoutComputed<boolean>;
-
+    
     public formUser = new User();
     public formUserValidation: KnockoutComputed<boolean>;
+    public formIsUploading = ko.observable<boolean>(false);
 
     constructor() {
         this.isAdmin = ko.computed(() => {
@@ -48,7 +49,20 @@ class KoUser {
     }
 
     public commitUser() {
+        this.formIsUploading(true);
+        this.formUser.save(this.userSaved.bind(this));
+    }
 
+    private userSaved(success: boolean, message: string, id: number) {
+        this.formIsUploading(false);
+        this.userCreationFormVisible(false);
+        if (success) {
+            this.formUser.id(id);
+            this.users.push(User.clone(this.formUser));
+            this.formUser;
+        } else {
+            alert(message);
+        }
     }
 
     public showEdit(user: User) {

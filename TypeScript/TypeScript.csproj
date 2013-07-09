@@ -66,6 +66,10 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
   <ItemGroup>
     <TypeScriptCompile Include="Models\Model.ts" />
     <TypeScriptCompile Include="Knockout\KoUser.ts" />
+    <TypeScriptCompile Include="Base\IPost.ts" />
+    <Content Include="Base\IPost.js">
+      <DependentUpon>IPost.ts</DependentUpon>
+    </Content>
     <Content Include="Knockout\KoUser.js">
       <DependentUpon>KoUser.ts</DependentUpon>
     </Content>

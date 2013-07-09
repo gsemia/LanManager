@@ -30,7 +30,8 @@ class UrlManager {
     public post<T>(address: string, data: {}, success?: (data: T) => void ) {
         $.post(this.getSiteAddress(address),
             data,
-            success || () => { }
+            success || () => { },
+            'json'
         );
     }
 }

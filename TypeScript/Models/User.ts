@@ -1,6 +1,8 @@
 
 import ko = require("Libraries/knockout");
 import kov = require("Libraries/knockoutValidation");
+import IPost = require("Base/IPost");
+import TS = require("TS");
 import Enumerable = require("Libraries/linq");
 import IInvitation = require("Models/IInvitation");
 import IRating = require("Models/IRating");
@@ -21,16 +23,14 @@ class User extends Model {
     public level = ko.observable<number>();
 
     public userList = ko.observableArray<User>();
-    public errorMessages = ko.observableArray<string>();
-    
+        
     public displayLevel: KnockoutComputed<string>;
     public editingMode = ko.observable<boolean>();
-    public usernameEntered = ko.observable<boolean>(false);
-    public nameEntered = ko.observable<boolean>(false);
-    public emailEntered = ko.observable<boolean>(false);
 
     public invitations = ko.observableArray<IInvitation>();
     public ratings = ko.observableArray<IRating>();
+
+    private validator: KnockoutObservableBase;
 
     public levels = [
         { level: 0, title: "Boon" },
@@ -41,30 +41,35 @@ class User extends Model {
     constructor(data?: IUser) {
         super();
         data = data || <IUser>{};
+        var collection = () => { return this.userList; };
         this.id(data.id || -1);
         this.username(data.username || "");
-        this.username.subscribe((newValue: string) => {
-            this.usernameEntered(true);
-            if (newValue != newValue.trim()) {
-                this.username(newValue.trim());
-            }
+        this.username.extend({
+            required: true,
+            unique: {
+                collection: collection,
+                valueAccessor: (user: User) => { return user.username(); },
+                externalValue: true,
+            },
         });
         this.email(data.email || "");
-        this.email.subscribe((newValue: string) => {
-            this.emailEntered(true);
-            if (newValue != newValue.trim()) {
-                this.email(newValue.trim());
-            }
+        this.email.extend({
+            required: true,
+            email: true,
+            unique: {
+                collection: collection,
+                valueAccessor: (user: User) => { return user.email(); },
+                externalValue: true,
+            },
         });
         this.name(data.name || "");
-        this.name.subscribe((newValue: string) => {
-            this.nameEntered(true);
-            if (newValue != newValue.trim()) {
-                this.name(newValue.trim());
-            }
-        });
         this.password(data.password || "");
         this.level(data.level || 0);
+
+        this.validator = ko.validatedObservable({
+            username: this.username,
+            email: this.email,
+        });
 
         this.displayLevel = ko.computed<string>(() => {
             return Enumerable.from<Level>(this.levels).singleOrDefault((level: Level) => { return level.level == this.level(); }, { level: -1, title: ""}).title;
@@ -76,32 +81,35 @@ class User extends Model {
     }
 
     public validate() {
-        var valid = true;
-        var messages: string[] = [];
-        if (this.username().length == 0) {
-            valid = false;
-            if (this.usernameEntered())
-                messages.push("Username must not be empty");
-        }
-        if (this.email().length == 0) {
-            valid = false;
-            if (this.emailEntered())
-                messages.push("Email address must not be empty");
-        }
-        if (this.email().match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/ig) != null) {
-            valid = false;
-            if (this.nameEntered())
-                messages.push("A valid email address must be entered");
-        }
-        if (Enumerable.from<User>(this.userList()).where((user: User) => {
-            return user.username() == this.username() || user.email() == this.email();
-        }).count() > 0) {
-            valid = false;
-            if (this.usernameEntered() && this.emailEntered())
-                messages.push("Username and email address must be unique");
-        }
-        this.errorMessages(messages);
-        return valid;
+        return this.validator.isValid();
+    }
+
+    public save(callback?: (success: boolean, message: string, id: number) => void ) {
+        callback = callback || (success: boolean, message: string) => { };
+        TS.app.urlManager.post<IPost>("user/create", {
+            "User": {
+                username: this.username(),
+                name: this.name(),
+                email: this.email(),
+                level: this.level(),
+            }
+        }, (data: IPost) => {
+            callback(data.success, data.message || "", data.id || -1);
+        });
+    }
+
+    public reset() {
+
+    }
+
+    static clone(user: User) {
+        return new User({
+            id: user.id(),
+            username: user.username(),
+            name: user.name(),
+            email: user.email(),
+            level: user.level(),
+        });
     }
 }
 
