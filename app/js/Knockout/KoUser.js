@@ -17,6 +17,7 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "TS", "Mod
             this.currentUser = ko.observable();
             this.userCreationFormVisible = ko.observable(false);
             this.formUser = new User();
+            this.formIsUploading = ko.observable(false);
             this.isAdmin = ko.computed(function () {
                 return _this.currentUser() && _this.currentUser().isAdmin();
             });
@@ -45,6 +46,20 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "TS", "Mod
         };
 
         KoUser.prototype.commitUser = function () {
+            this.formIsUploading(true);
+            this.formUser.save(this.userSaved.bind(this));
+        };
+
+        KoUser.prototype.userSaved = function (success, message) {
+            this.formIsUploading(false);
+            this.userCreationFormVisible(false);
+            if (success) {
+                this.users.push(this.formUser);
+                this.formUser = new User();
+                this.formUser.username("");
+            } else {
+                alert(message);
+            }
         };
 
         KoUser.prototype.showEdit = function (user) {

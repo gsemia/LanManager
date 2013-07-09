@@ -4,8 +4,11 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", "Libraries/knockout", "Libraries/linq", "Models/Model"], function(require, exports, __ko__, __Enumerable__, __Model__) {
+define(["require", "exports", "Libraries/knockout", "Libraries/knockoutValidation", "TS", "Libraries/linq", "Models/Model"], function(require, exports, __ko__, __kov__, __TS__, __Enumerable__, __Model__) {
     var ko = __ko__;
+    var kov = __kov__;
+    
+    var TS = __TS__;
     var Enumerable = __Enumerable__;
     
     
@@ -29,11 +32,7 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "Models/Mo
             this.password = ko.observable();
             this.level = ko.observable();
             this.userList = ko.observableArray();
-            this.errorMessages = ko.observableArray();
             this.editingMode = ko.observable();
-            this.usernameEntered = ko.observable(false);
-            this.nameEntered = ko.observable(false);
-            this.emailEntered = ko.observable(false);
             this.invitations = ko.observableArray();
             this.ratings = ko.observableArray();
             this.levels = [
@@ -42,30 +41,41 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "Models/Mo
                 { level: 9, title: "Godmode" }
             ];
             data = data || {};
+            var collection = function () {
+                return _this.userList;
+            };
             this.id(data.id || -1);
             this.username(data.username || "");
-            this.username.subscribe(function (newValue) {
-                _this.usernameEntered(true);
-                if (newValue != newValue.trim()) {
-                    _this.username(newValue.trim());
+            this.username.extend({
+                required: true,
+                unique: {
+                    collection: collection,
+                    valueAccessor: function (user) {
+                        return user.username();
+                    },
+                    externalValue: true
                 }
             });
             this.email(data.email || "");
-            this.email.subscribe(function (newValue) {
-                _this.emailEntered(true);
-                if (newValue != newValue.trim()) {
-                    _this.email(newValue.trim());
+            this.email.extend({
+                required: true,
+                email: true,
+                unique: {
+                    collection: collection,
+                    valueAccessor: function (user) {
+                        return user.email();
+                    },
+                    externalValue: true
                 }
             });
             this.name(data.name || "");
-            this.name.subscribe(function (newValue) {
-                _this.nameEntered(true);
-                if (newValue != newValue.trim()) {
-                    _this.name(newValue.trim());
-                }
-            });
             this.password(data.password || "");
             this.level(data.level || 0);
+
+            this.validator = ko.validatedObservable({
+                username: this.username,
+                email: this.email
+            });
 
             this.displayLevel = ko.computed(function () {
                 return Enumerable.from(_this.levels).singleOrDefault(function (level) {
@@ -78,33 +88,22 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "Models/Mo
         };
 
         User.prototype.validate = function () {
-            var _this = this;
-            var valid = true;
-            var messages = [];
-            if (this.username().length == 0) {
-                valid = false;
-                if (this.usernameEntered())
-                    messages.push("Username must not be empty");
-            }
-            if (this.email().length == 0) {
-                valid = false;
-                if (this.emailEntered())
-                    messages.push("Email address must not be empty");
-            }
-            if (this.email().match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/ig) != null) {
-                valid = false;
-                if (this.nameEntered())
-                    messages.push("A valid email address must be entered");
-            }
-            if (Enumerable.from(this.userList()).where(function (user) {
-                return user.username() == _this.username() || user.email() == _this.email();
-            }).count() > 0) {
-                valid = false;
-                if (this.usernameEntered() && this.emailEntered())
-                    messages.push("Username and email address must be unique");
-            }
-            this.errorMessages(messages);
-            return valid;
+            return this.validator.isValid();
+        };
+
+        User.prototype.save = function (callback) {
+            callback = callback || function (success, message) {
+            };
+            TS.app.urlManager.post("user/create", {
+                "User": {
+                    username: this.username(),
+                    name: this.name(),
+                    email: this.email(),
+                    level: this.level()
+                }
+            }, function (data) {
+                callback(data.success, data.message || "");
+            });
         };
         return User;
     })(Model);

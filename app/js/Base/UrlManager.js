@@ -21,7 +21,7 @@ define(["require", "exports", "Libraries/jquery"], function(require, exports, __
 
         UrlManager.prototype.post = function (address, data, success) {
             $.post(this.getSiteAddress(address), data, success || function () {
-            });
+            }, 'json');
         };
         return UrlManager;
     })();

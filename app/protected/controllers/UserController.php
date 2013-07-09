@@ -17,8 +17,8 @@ class UserController extends Controller
 		echo EJSON::encode(User::model()->findByPk(Yii::app()->user->id));
 	}
 	
-	public function actionSet()
+	public function actionCreate()
 	{
-		
+		echo EJSON::encode(array('success'=>true, 'message'=>'bullshit'));
 	}
 }
