@@ -19,6 +19,6 @@ class UserController extends Controller
 	
 	public function actionCreate()
 	{
-		echo EJSON::encode(array('success'=>true, 'message'=>'bullshit'));
+		echo EJSON::encode(array('success'=>false, 'message'=>'bullshit', 'id'=>3));
 	}
 }

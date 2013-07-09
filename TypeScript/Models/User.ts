@@ -98,10 +98,6 @@ class User extends Model {
         });
     }
 
-    public reset() {
-
-    }
-
     static clone(user: User) {
         return new User({
             id: user.id(),

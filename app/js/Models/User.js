@@ -102,7 +102,17 @@ define(["require", "exports", "Libraries/knockout", "Libraries/knockoutValidatio
                     level: this.level()
                 }
             }, function (data) {
-                callback(data.success, data.message || "");
+                callback(data.success, data.message || "", data.id || -1);
+            });
+        };
+
+        User.clone = function (user) {
+            return new User({
+                id: user.id(),
+                username: user.username(),
+                name: user.name(),
+                email: user.email(),
+                level: user.level()
             });
         };
         return User;

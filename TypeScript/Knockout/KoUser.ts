@@ -17,7 +17,7 @@ class KoUser {
     public userCreationFormVisible = ko.observable(false);
     public userAddable: KnockoutComputed<boolean>;
     
-    public formUser = new User();
+    public formUser = ko.observable<User>(new User());
     public formUserValidation: KnockoutComputed<boolean>;
     public formIsUploading = ko.observable<boolean>(false);
 
@@ -26,7 +26,7 @@ class KoUser {
             return this.currentUser() && this.currentUser().isAdmin();
         });
         this.formUserValidation = ko.computed(() => {
-            return this.formUser.validate();
+            return this.formUser().validate();
         });
         this.userAddable = ko.computed(() => {
             return this.isAdmin() && !this.userCreationFormVisible();
@@ -37,7 +37,7 @@ class KoUser {
         });
         TS.app.urlManager.get<IUser[]>("user/get", (data: IUser[]) => {
             this.users(ko.utils.arrayMap(data, (user: IUser) => { return new User(user); }));
-            this.formUser.userList = this.users;
+            this.formUser().userList = this.users;
         });
 
         // KnockoutBinding Workaround
@@ -50,19 +50,18 @@ class KoUser {
 
     public commitUser() {
         this.formIsUploading(true);
-        this.formUser.save(this.userSaved.bind(this));
-    }
-
-    private userSaved(success: boolean, message: string, id: number) {
-        this.formIsUploading(false);
-        this.userCreationFormVisible(false);
-        if (success) {
-            this.formUser.id(id);
-            this.users.push(User.clone(this.formUser));
-            this.formUser;
-        } else {
-            alert(message);
-        }
+        this.formUser().save((success: boolean, message: string, id: number) => {
+            this.formIsUploading(false);
+            if (success) {
+                this.userCreationFormVisible(false);
+                this.formUser().id(id);
+                this.users.push(this.formUser());
+                this.formUser(new User());
+                this.formUser().userList = this.users;
+            } else {
+                alert(message);
+            }
+        });
     }
 
     public showEdit(user: User) {

@@ -16,13 +16,13 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "TS", "Mod
             this.users = ko.observableArray();
             this.currentUser = ko.observable();
             this.userCreationFormVisible = ko.observable(false);
-            this.formUser = new User();
+            this.formUser = ko.observable(new User());
             this.formIsUploading = ko.observable(false);
             this.isAdmin = ko.computed(function () {
                 return _this.currentUser() && _this.currentUser().isAdmin();
             });
             this.formUserValidation = ko.computed(function () {
-                return _this.formUser.validate();
+                return _this.formUser().validate();
             });
             this.userAddable = ko.computed(function () {
                 return _this.isAdmin() && !_this.userCreationFormVisible();
@@ -35,7 +35,7 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "TS", "Mod
                 _this.users(ko.utils.arrayMap(data, function (user) {
                     return new User(user);
                 }));
-                _this.formUser.userList = _this.users;
+                _this.formUser().userList = _this.users;
             });
 
             // KnockoutBinding Workaround
@@ -46,20 +46,20 @@ define(["require", "exports", "Libraries/knockout", "Libraries/linq", "TS", "Mod
         };
 
         KoUser.prototype.commitUser = function () {
+            var _this = this;
             this.formIsUploading(true);
-            this.formUser.save(this.userSaved.bind(this));
-        };
-
-        KoUser.prototype.userSaved = function (success, message) {
-            this.formIsUploading(false);
-            this.userCreationFormVisible(false);
-            if (success) {
-                this.users.push(this.formUser);
-                this.formUser = new User();
-                this.formUser.username("");
-            } else {
-                alert(message);
-            }
+            this.formUser().save(function (success, message, id) {
+                _this.formIsUploading(false);
+                _this.userCreationFormVisible(false);
+                if (success) {
+                    _this.formUser().id(id);
+                    _this.users.push(_this.formUser());
+                    _this.formUser(new User());
+                    _this.formUser().userList = _this.users;
+                } else {
+                    alert(message);
+                }
+            });
         };
 
         KoUser.prototype.showEdit = function (user) {

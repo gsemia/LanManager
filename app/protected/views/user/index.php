@@ -8,31 +8,31 @@ $this->breadcrumbs=array(
 
 <div class="knockout" data-ko="KoUser">
 	<button class="btn" data-bind="click: addUser, visible: userAddable">Create User</button>
-	<div data-bind="visible: userCreationFormVisible" style="display: none;">
-		<form class="well well-small well-collapse" data-bind="validationOptions: { insertMessages: false }">
+	<div data-bind="visible: userCreationFormVisible" style="display: none;" class="well well-small well-collapse">
+		<form data-bind="with: formUser, validationOptions: { insertMessages: false }">
 			<fieldset>
 				<p>
 					<label for="userFormUsername">Username</label>
-					<input id="userFormUsername" data-bind="value: formUser.username" type="text" />
+					<input id="userFormUsername" data-bind="value: username" type="text" />
 				</p>
-				<p class="text-error" data-bind="validationMessage: formUser.username"></p>
+				<p class="text-error" data-bind="validationMessage: username"></p>
 				<p>
 					<label for="userFormName">Name</label>
-					<input id="userFormName" data-bind="value: formUser.name" type="text" />
+					<input id="userFormName" data-bind="value: name" type="text" />
 				</p>
 				<p>
 					<label for="userFormEmail">Email</label>
-					<input id="userFormEmail" data-bind="value: formUser.email" type="email" />
+					<input id="userFormEmail" data-bind="value: email" type="email" />
 				</p>
-				<p class="text-error" data-bind="validationMessage: formUser.email"></p>
+				<p class="text-error" data-bind="validationMessage: email"></p>
 				<p>
 					<label for="userFormLevel">Level</label>
-					<select id="userFormLevel" data-bind="options: formUser.levels, value: formUser.level, optionsText: 'title'"></select>
+					<select id="userFormLevel" data-bind="options: levels, value: level, optionsText: 'title', optionsValue: 'level'"></select>
 				</p>
 			</fieldset>
-			<button data-bind="click: commitUser, enable: formUserValidation" class="btn btn-primary">Save</button>
-			<img data-bind="visible: formIsUploading" src="<?php echo Yii::app()->baseUrl; ?>/images/loading.gif" style="display: none;" />
 		</form>
+		<button data-bind="click: commitUser, enable: formUserValidation" class="btn btn-primary">Save</button>
+		<img data-bind="visible: formIsUploading" src="<?php echo Yii::app()->baseUrl; ?>/images/loading.gif" style="display: none;" />
 	</div>
 	
 	<div data-bind="visible: users().length > 0" style="display: none;">
