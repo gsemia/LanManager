@@ -10,6 +10,8 @@
  * @property string $name
  * @property string $password
  * @property integer $level
+ * 
+ * @property boolean $isAdmin
  *
  * The followings are the available model relations:
  * @property Event[] $events
@@ -21,6 +23,8 @@
  */
 class User extends ActiveRecord
 {
+	private static $current;
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -29,6 +33,17 @@ class User extends ActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	
+	/**
+	 * Returns the current logged in user
+	 * @return User
+	 */
+	public static function current()
+	{
+		if (self::$current !== null)
+			return self::$current;
+		return self::$current = User::model()->findByPk(Yii::app()->user->id);
 	}
 
 	/**
@@ -113,6 +128,11 @@ class User extends ActiveRecord
 	
 	protected function jsonAttributes() {
 		return array_diff(parent::jsonAttributes(), array('password'));
+	}
+	
+	public function getIsAdmin()
+	{
+		return $this->level >= 9;
 	}
 
 	public function setNewPassword($password)
