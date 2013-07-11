@@ -29,10 +29,8 @@ define(["require", "exports", "Libraries/knockout", "Libraries/knockoutValidatio
             this.username = ko.observable();
             this.email = ko.observable();
             this.name = ko.observable();
-            this.password = ko.observable();
             this.level = ko.observable();
             this.userList = ko.observableArray();
-            this.editingMode = ko.observable();
             this.invitations = ko.observableArray();
             this.ratings = ko.observableArray();
             this.levels = [
@@ -41,41 +39,24 @@ define(["require", "exports", "Libraries/knockout", "Libraries/knockoutValidatio
                 { level: 9, title: "Godmode" }
             ];
             data = data || {};
-            var collection = function () {
-                return _this.userList;
-            };
+            if (data instanceof User) {
+                this.reference = data;
+                data = {
+                    id: data.id(),
+                    username: data.username(),
+                    email: data.email(),
+                    name: data.name(),
+                    level: data.level()
+                };
+            }
+
             this.id(data.id || -1);
             this.username(data.username || "");
-            this.username.extend({
-                required: true,
-                unique: {
-                    collection: collection,
-                    valueAccessor: function (user) {
-                        return user.username();
-                    },
-                    externalValue: true
-                }
-            });
             this.email(data.email || "");
-            this.email.extend({
-                required: true,
-                email: true,
-                unique: {
-                    collection: collection,
-                    valueAccessor: function (user) {
-                        return user.email();
-                    },
-                    externalValue: true
-                }
-            });
             this.name(data.name || "");
-            this.password(data.password || "");
             this.level(data.level || 0);
 
-            this.validator = ko.validatedObservable({
-                username: this.username,
-                email: this.email
-            });
+            this.applyValidationRules();
 
             this.displayLevel = ko.computed(function () {
                 return Enumerable.from(_this.levels).singleOrDefault(function (level) {
@@ -92,28 +73,96 @@ define(["require", "exports", "Libraries/knockout", "Libraries/knockoutValidatio
         };
 
         User.prototype.save = function (callback) {
+            var _this = this;
             callback = callback || function (success, message) {
             };
-            TS.app.urlManager.post("user/create", {
-                "User": {
-                    username: this.username(),
-                    name: this.name(),
-                    email: this.email(),
-                    level: this.level()
+
+            if (TS.app.util.isNumeric(this.id()) && this.id() > 0) {
+                TS.app.urlManager.post("user/update", {
+                    "User": {
+                        id: this.id(),
+                        username: this.username(),
+                        name: this.name(),
+                        email: this.email(),
+                        level: this.level()
+                    }
+                }, function (data) {
+                    if (data.success)
+                        _this.updateReference();
+                    callback(data.success, data.message || "", false);
+                });
+            } else {
+                TS.app.urlManager.post("user/create", {
+                    "User": {
+                        username: this.username(),
+                        name: this.name(),
+                        email: this.email(),
+                        level: this.level()
+                    }
+                }, function (data) {
+                    if (data.success) {
+                        var id = data.id || -1;
+                        if (TS.app.util.isNumeric(id) && id > 0) {
+                            _this.id(id);
+                        }
+                    }
+                    callback(data.success, data.message || "", true);
+                });
+            }
+        };
+
+        User.prototype.update = function (data) {
+            this.username(data.username);
+            this.name(data.name);
+            this.email(data.email);
+            this.level(data.level);
+            this.applyValidationRules();
+        };
+
+        User.prototype.applyValidationRules = function () {
+            var _this = this;
+            var collection = function () {
+                return _this.userList;
+            };
+
+            this.username.extend({ validatable: false });
+            this.username.extend({
+                required: true,
+                unique: {
+                    collection: collection,
+                    valueAccessor: function (user) {
+                        return user.username();
+                    },
+                    externalValue: this.username()
                 }
-            }, function (data) {
-                callback(data.success, data.message || "", data.id || -1);
+            });
+
+            this.email.extend({ validatable: false });
+            this.email.extend({
+                required: true,
+                email: true,
+                unique: {
+                    collection: collection,
+                    valueAccessor: function (user) {
+                        return user.email();
+                    },
+                    externalValue: this.email()
+                }
+            });
+
+            this.validator = ko.validatedObservable({
+                username: this.username,
+                email: this.email
             });
         };
 
-        User.clone = function (user) {
-            return new User({
-                id: user.id(),
-                username: user.username(),
-                name: user.name(),
-                email: user.email(),
-                level: user.level()
-            });
+        User.prototype.updateReference = function () {
+            if (this.reference) {
+                this.reference.username(this.username());
+                this.reference.name(this.name());
+                this.reference.email(this.email());
+                this.reference.level(this.level());
+            }
         };
         return User;
     })(Model);

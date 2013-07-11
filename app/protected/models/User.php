@@ -115,16 +115,15 @@ class User extends ActiveRecord
 		return array_diff(parent::jsonAttributes(), array('password'));
 	}
 
-
 	public function setNewPassword($password)
 	{
-		$ph = new PasswordHash(12, false);
+		$ph = new \Hautelook\Phpass\PasswordHash(12, false);
 		$this->password = $ph->HashPassword($password);
 	}
 	
 	public function checkPassword($password)
 	{
-		$ph = new PasswordHash(12, false);
+		$ph = new \Hautelook\Phpass\PasswordHash(12, false);
 		return $ph->CheckPassword($password, $this->password);
 	}
 	
@@ -135,5 +134,10 @@ class User extends ActiveRecord
 			return true;
 		}
 		return false;
+	}
+	
+	public function cacheUntilNewRecord()
+	{
+		return $this->cache(2592000, new CDbCacheDependency('SELECT MAX(id) FROM ' . $this->tableName()));		
 	}
 }

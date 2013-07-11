@@ -1,6 +1,7 @@
 app/assets/
 app/protected/runtime/
 packages/
+vendor/
 TypeScript/bin/
 TypeScript/obj/
 TypeScript/*.js

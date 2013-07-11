@@ -1,0 +1,14 @@
+{
+    "name": "vendor/lan-manager",
+    "description": "A simple tool to manage lan parties.",
+    "authors": [
+        {
+            "name": "Lukas Spirig",
+            "email": "lukas.spirig@gmail.com"
+        }
+    ],
+    "require": {
+		"yiisoft/yii": "dev-master",
+		"hautelook/phpass": "dev-master"
+    }
+}

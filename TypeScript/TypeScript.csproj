@@ -70,6 +70,14 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
     <Content Include="Base\IPost.js">
       <DependentUpon>IPost.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Base\Util.ts" />
+    <TypeScriptCompile Include="Base\Thread.ts" />
+    <Content Include="Base\Thread.js">
+      <DependentUpon>Thread.ts</DependentUpon>
+    </Content>
+    <Content Include="Base\Util.js">
+      <DependentUpon>Util.ts</DependentUpon>
+    </Content>
     <Content Include="Knockout\KoUser.js">
       <DependentUpon>KoUser.ts</DependentUpon>
     </Content>
@@ -77,6 +85,10 @@ xcopy $(ProjectDir)*.js /S /Y $(SolutionDir)app\js\</PostBuildEvent>
     <TypeScriptCompile Include="Models\IEvent.ts" />
     <TypeScriptCompile Include="Libraries\linq.ts" />
     <TypeScriptCompile Include="Libraries\knockoutValidation.ts" />
+    <TypeScriptCompile Include="Libraries\bootstrap.ts" />
+    <Content Include="Libraries\bootstrap.js">
+      <DependentUpon>bootstrap.ts</DependentUpon>
+    </Content>
     <Content Include="Libraries\knockoutValidation.js">
       <DependentUpon>knockoutValidation.ts</DependentUpon>
     </Content>

@@ -1,6 +1,7 @@
-define(["require", "exports", "Base/Cache", "Base/UrlManager"], function(require, exports, __Cache__, __UrlManager__) {
+define(["require", "exports", "Base/Cache", "Base/UrlManager", "Base/Util"], function(require, exports, __Cache__, __UrlManager__, __Util__) {
     var Cache = __Cache__;
     var UrlManager = __UrlManager__;
+    var Util = __Util__;
 
     
 
@@ -8,6 +9,7 @@ define(["require", "exports", "Base/Cache", "Base/UrlManager"], function(require
         function TS() {
             this.cache = new Cache();
             this.urlManager = new UrlManager();
+            this.util = new Util();
         }
         TS.app = new TS();
         return TS;
