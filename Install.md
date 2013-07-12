@@ -85,7 +85,7 @@
 86. He will tell you to use XAMPP and Netbeans for PHP
 87. getting XAMPP from http://www.apachefriends.org/de/xampp-windows.html#628 now. and install it.
 88. Get the mysql Workbench http://dev.mysql.com/downloads/tools/workbench/ and install it.
-89. Get NetBeans from <GOOGLE IT YOURSELF you lacy bastard>
+89. Get NetBeans from GOOGLE IT YOURSELF you lacy bastard
 90. Get the nuGet Plugin for Visal Studio
 91. Get Composer and configure it in NetBeans
 92. Build the Project in Visual Studio at least once
