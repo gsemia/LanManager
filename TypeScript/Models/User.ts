@@ -62,7 +62,14 @@ class User extends Model {
         this.applyValidationRules();
 
         this.displayLevel = ko.computed<string>(() => {
-            return Enumerable.from<Level>(this.levels).singleOrDefault((level: Level) => { return level.level == this.level(); }, { level: -1, title: ""}).title;
+            return Enumerable
+                .from<Level>(this.levels)
+                .singleOrDefault(
+                    (level: Level) => {
+                        return level.level == this.level();
+                    }, { level: -1, title: "" }
+                )
+                .title;
         });
     }
 
