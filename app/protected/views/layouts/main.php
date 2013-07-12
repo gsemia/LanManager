@@ -5,9 +5,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 
-    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
-
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css" />
 
 	<script src="<?php echo Yii::app()->baseUrl; ?>/js/Scripts/modernizr-2.6.2.js"></script>
 	<?php Yii::app()->bootstrap->registerAllCss(); ?>
