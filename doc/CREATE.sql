@@ -137,3 +137,12 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `user`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `LanManager`;
+INSERT INTO `user` (`id`, `username`, `email`, `name`, `password`, `level`) VALUES (1, 'Admin', 'test@test.ch', 'Admin', '$2a$12$0jLIX2.8S6gnXe9onoqBY.YlJ1s6z3XMRRR7jinJW1ZudVCx/d40y', 9);
+
+COMMIT;
